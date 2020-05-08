@@ -52,9 +52,9 @@ def build_model(data):
         # fix the learning rate, no decay
         model.min_alpha = model.alpha
 
-    model.save("NLP.model")
+    model.save("Model/NLP.model")
 
-    return "NLP.model"
+    return "Model/NLP.model"
 
 
 def build_predictions(model_file, ingredients_list):
@@ -94,15 +94,31 @@ def output(predictions, data_frame):
     total_count = 10
     max_cuisine_type = ""
     max_cuisine_count = 0
+    # For cuisine types with same count as max_cuisine_type
+    similar_cuisine = []
     for cuisine in cuisine_dictionary:
         n = max(max_cuisine_count, cuisine_dictionary[cuisine])
         if n != max_cuisine_count:
             max_cuisine_count = n
             max_cuisine_type = cuisine
+            similar_cuisine = []
+        elif cuisine_dictionary[cuisine] == max_cuisine_count:
+            similar_cuisine.append(cuisine)
 
-    # Output
-    print("Cuisine: " + max_cuisine_type +
-          " (" + str(round(float(max_cuisine_count/total_count), 2)) + ")")
+    if len(similar_cuisine) != 0:
+        # Output
+        print("Cuisine: " + max_cuisine_type + " (" +
+              str(round(float(max_cuisine_count/total_count), 2)) + ")", end='')
+
+        for cuisine_type in similar_cuisine:
+            print(", " + cuisine_type + " (" +
+                  str(round(float(cuisine_dictionary[cuisine_type]/total_count), 2)) + ")", end='')
+        print("")
+    else:
+        # Output
+        print("Cuisine: " + max_cuisine_type + " (" +
+              str(round(float(max_cuisine_count/total_count), 2)) + ")")
+
     print("Closest 5 Recipes: ", end='')
 
     # Predictions list for printing output
