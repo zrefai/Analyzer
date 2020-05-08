@@ -6,25 +6,37 @@ import time
 def main(args):
 
     # Load in data from file
-    start = time.time()
     df = functions.data_load()
-    end = time.time()
 
-    print("Data load execution: " + str(end - start))
+    MODEL = 0
+    # Check if user wanted
+    if args.model is not None:
+        MODEL = int(args.model[0])
 
-    # Process data into format acceptable by BERT
-    start = time.time()
-    padded_data, masked_data = functions.data_process(df)
-    end = time.time()
+    # If you want to generate a new model
+    if MODEL:
+        start = time.time()
+        # Process data from data_frame
+        tagged_recipes = functions.data_process(df)
+        end = time.time()
 
-    print("Data process execution: " + str(end - start))
+        print("Data process execution: " + str(end - start))
 
-    # Now run through BERT model
-    start = time.time()
-    features = functions.model_run(padded_data, masked_data)
-    end = time.time()
+        start = time.time()
+        # Build the model for predictions of recipes
+        model = functions.build_model(tagged_recipes)
+        end = time.time()
 
-    print("Model run execution: " + str(end - start))
+    # Convert list of list to flat list
+    ingredients_list = [
+        ingredient for sublist in args.ingredient for ingredient in sublist]
+
+    # Generate predictions
+    predictions = functions.build_predictions(
+        'Models/NLP.model', ingredients_list)
+
+    # Build output
+    functions.output(predictions, df)
 
 
 if __name__ == '__main__':
@@ -32,6 +44,8 @@ if __name__ == '__main__':
 
     parser.add_argument("--ingredient", action='append', nargs='+', type=str, required=True,
                         help="Ingredients to find recipes with")
+    parser.add_argument("--model", action='append', type=str, required=False,
+                        help="Whether to generate new model")
     args = parser.parse_args()
 
     main(args)
