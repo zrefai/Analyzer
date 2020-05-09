@@ -37,7 +37,6 @@ def main(args):
     ingredients_list = [
         ingredient for sublist in args.ingredient for ingredient in sublist]
 
-    print(ingredients_list)
     # Generate predictions
     predictions = functions.build_predictions(
         'Models/NLP.model', ingredients_list)
