@@ -20,17 +20,24 @@ def main(args):
         tagged_recipes = functions.data_process(df)
         end = time.time()
 
-        print("Data process execution: " + str(end - start))
+        print("Data process execution: " +
+              str(round((end - start), 2)) + " seconds")
+        print("Model training and generation started for 20 epochs")
 
         start = time.time()
         # Build the model for predictions of recipes
         model = functions.build_model(tagged_recipes)
         end = time.time()
 
+        print("Model build execution: " +
+              str(round((end-start), 2)) + " seconds")
+        print("")
+
     # Convert list of list to flat list
     ingredients_list = [
         ingredient for sublist in args.ingredient for ingredient in sublist]
 
+    print(ingredients_list)
     # Generate predictions
     predictions = functions.build_predictions(
         'Models/NLP.model', ingredients_list)

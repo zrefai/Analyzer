@@ -70,3 +70,10 @@ build_prediction will take the model generated and the ingredients list, structu
 ## output(predictions, data_frame)
 
 output will take the predictions and the dataframe generated from data_load to create a formatted output. The cuisine types of each predicted recipe is used to genereate a prediction on the type of cuisine the user given ingredients follow. The data from predictions and the dataframe output a predicted cuisine type, the closest 5 recipes, and their similarity scores.
+
+## Tests
+
+-  test_data_load: tests if data was loaded into data frame properply
+-  test_data_process: tests if the data was processes correctly as a tagged document data structure
+-  test_build_model: tests if the model was generated and if the file exists after saving
+-  test_build_predictions: tests if the predictions was generated properly

@@ -9,7 +9,6 @@ from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 def data_load():
 
     # Function helps us load data from the json file into an array
-
     file_path = 'Data/yummly.json'
 
     # Open the json file
@@ -47,14 +46,13 @@ def build_model(data):
     for epoch in range(20):
         print("Epoch iteration: " + str(epoch))
         model.train(data, total_examples=model.corpus_count, epochs=model.iter)
-        # decrease the learning rate
         model.alpha -= 0.0002
-        # fix the learning rate, no decay
         model.min_alpha = model.alpha
 
-    model.save("Model/NLP.model")
+    # Save the model
+    model.save("Models/NLP.model")
 
-    return "Model/NLP.model"
+    return "Models/NLP.model"
 
 
 def build_predictions(model_file, ingredients_list):
